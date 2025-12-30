@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parallel Computing Project - Kelompok 7</title>
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #f59e0b;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: #fff;
+        }
+
+        /* --- LAYOUT UTILITIES --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        section {
+            padding: 60px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- BUTTONS & BADGES --- */
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary);
+        }
+
+        .badges {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badges img {
+            height: 25px;
+        }
+
+        /* --- CONTENT STYLING --- */
+        h2 {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            border-left: 5px solid var(--accent);
+            padding-left: 15px;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        /* --- CARDS & BOXES --- */
+        .highlight-box {
+            background-color: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: block;
+        }
+
+        /* --- TABLES --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        /* --- IMAGES --- */
+        .img-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .caption {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            margin-top: 10px;
+            display: block;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #1e293b;
+            color: #cbd5e1;
+            padding: 40px 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="hero">
+        <div class="container">
+            <h1>Implementasi Paralelisme pada Pipeline Machine Learning</h1>
+            <p>Studi Kasus: Penerapan Paralelisme pada Aplikasi Machine Learning Skala Kecil</p>
+
+            <a href="https://huggingface.co/spaces/azharkhairaa/aiart-vs-realart-detection" target="_blank"
+                class="btn">Coba Inference Model</a>
+
+            <div class="badges">
+                <img src="https://img.shields.io/badge/Python-3.9-blue?style=for-the-badge&logo=python&logoColor=white"
+                    alt="Python">
+                <img src="https://img.shields.io/badge/Scikit_Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white"
+                    alt="Sklearn">
+                <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white"
+                    alt="PyTorch">
+                <!-- <img src="https://img.shields.io/badge/Status-Completed-success?style=for-the-badge" alt="Status"> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <section id="abstract">
+            <h2>Abstrak</h2>
+            <p style="text-align: justify;">
+                Project ini mengevaluasi efektivitas teknik <strong>Komputasi Paralel</strong> dalam mengatasi latensi
+                tinggi pada pemrosesan dataset gambar masif (20.000 sampel).
+                Tantangan utamanya adalah menyeimbangkan <em>trade-off</em> antara efisiensi waktu dan akurasi model.
+            </p>
+            <div class="highlight-box" style="text-align: justify;">
+                <strong>Hasil Utama:</strong> Implementasi paralelisasi pada CPU 8-Core berhasil memangkas waktu
+                training SVM Hybrid menjadi <strong>58 detik</strong> (Speedup 3.42x) dengan akurasi mencapai
+                <strong>86%</strong>.
+            </div>
+        </section>
+
+        <section id="architecture">
+            <h2>Desain Solusi Paralel</h2>
+            <p style="text-align: justify;">
+                Kami menggunakan pola desain <strong>Master-Worker Pattern</strong> untuk mendistribusikan beban kerja
+                ke 8 Core CPU secara simultan.
+                Pendekatan ini menggunakan library <code>joblib</code> dengan backend <code>loky</code> (process-based)
+                untuk mengatasi hambatan <em>Global Interpreter Lock (GIL)</em> pada Python.
+            </p>
+
+            <div class="img-container">
+                <img src="images/arsitektur-master-worker.png" alt="Diagram Arsitektur Master Worker"
+                    onerror="this.style.display='none'; document.getElementById('alt-diagram').style.display='block';">
+                <div id="alt-diagram" style="display:none; padding:20px; background:#f0f0f0; border:1px dashed #ccc;">
+                    (Silakan upload gambar diagram arsitektur ke folder images/ dan sesuaikan nama filenya di
+                    index.html)
+                </div>
+                <span class="caption">Gambar 1: Alur distribusi tugas dari Master ke Worker Processes.</span>
+            </div>
+        </section>
+
+        <section id="performance">
+            <h2>Analisis Performa & Benchmark</h2>
+            <p>Berikut adalah hasil eksperimen kinerja pada infrastruktur <strong>10-Core CPU</strong> (8 Core
+                dialokasikan untuk Worker).</p>
+
+            <h3>1. Preprocessing (Data Parallelism)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metode</th>
+                        <th>Waktu Serial</th>
+                        <th>Waktu Paralel (8 Core)</th>
+                        <th>Speedup</th>
+                        <th>Efficiency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Simple (Resize)</td>
+                        <td>638.07 s</td>
+                        <td>137.98 s</td>
+                        <td><strong>4.62x</strong></td>
+                        <td>57.8%</td>
+                    </tr>
+                    <tr>
+                        <td>ResNet Extract</td>
+                        <td>1247.08 s</td>
+                        <td>727.85 s</td>
+                        <td><strong>1.71x</strong></td>
+                        <td>21.4%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="text-align: justify;"><em>Analisis: Speedup tidak mencapai linear (8x) dikarenakan adanya
+                    Bottleneck I/O (kecepatan disk) dan
+                    Memory Bandwidth Saturation saat memuat model ResNet yang besar.</em></p>
+
+            <h3>2. Training Model (Task Parallelism)</h3>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0;">
+                <div class="img-container">
+                    <img src="images/hasil_eksperimen_training_rf.png" alt="Hasil Eksperimen Random Forest"
+                        onerror="this.style.display='none'">
+                    <span class="caption">Random Forest - Speedup 2.83x</span>
+                </div>
+                <div class="img-container">
+                    <img src="images/hasil_eksperimen_training_hgb.png" alt="Hasil Eksperimen HistGradientBoosting"
+                        onerror="this.style.display='none'">
+                    <span class="caption">HistGradientBoosting - Speedup 1.58x</span>
+                </div>
+            </div>
+
+            <div
+                style="display: grid; grid-template-columns: 1fr; gap: 5px; max-width: 500px; margin-left: auto; margin-right: auto;">
+                <div class="img-container">
+                    <img src="images/hasil_eksperimen_training_svm.png" alt="Hasil Eksperimen SVM Hybrid"
+                        onerror="this.style.display='none'">
+                    <span class="caption">SVM Bagging (Hybrid) - Speedup 3.42x</span>
+                </div>
+            </div>
+
+            <p style="text-align: center; font-size: 0.95rem; color: var(--text-gray);"><em>Gambar 2:
+                    Hasil eksperimen performance training untuk ketiga algoritma.</em></p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Algorithm</th>
+                        <th>Serial Time</th>
+                        <th>Parallel Time</th>
+                        <th>Speedup</th>
+                        <th>Efficiency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Random Forest</td>
+                        <td>283,06 s</td>
+                        <td>99,86 s</td>
+                        <td><strong>2,83x</strong></td>
+                        <td>35,43%</td>
+                    </tr>
+                    <tr>
+                        <td>HistGradientBoosting</td>
+                        <td>322,4 s</td>
+                        <td>203,56 s</td>
+                        <td><strong>1,58x</strong></td>
+                        <td>19,8%</td>
+                    </tr>
+                    <tr>
+                        <td>SVM Bagging (Hybrid)</td>
+                        <td>200,3 s</td>
+                        <td>58,65 s</td>
+                        <td><strong>3,42x</strong></td>
+                        <td>42,69%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">2.83x</span>
+                    <strong>Random Forest</strong><br>
+                    <small>Speedup Moderate</small>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">1.58x</span>
+                    <strong>HistGradientBoosting</strong><br>
+                    <small>Nested Parallelism Overhead</small>
+                </div>
+                <div class="stat-card" style="border-color: var(--primary);">
+                    <span class="stat-number">3.42x</span>
+                    <strong>SVM Hybrid</strong><br>
+                    <strong>Best Performance</strong>
+                </div>
+            </div>
+
+
+
+        </section>
+
+        <section id="accuracy">
+            <h2>Evaluasi Kualitas Model</h2>
+            <p style="text-align: justify;">
+                Meskipun metode Tradisional (Pixel-based) lebih cepat dalam preprocessing, akurasinya rendah untuk
+                kebutuhan produksi.
+                Metode Hybrid (ResNet + SVM) dengan bantuan komputasi paralel menjadi solusi optimal.
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pendekatan</th>
+                        <th>Algoritma</th>
+                        <th>Akurasi</th>
+                        <th>Total Pipeline Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tradisional</td>
+                        <td>Random Forest</td>
+                        <td>66%</td>
+                        <td>~5 Menit</td>
+                    </tr>
+                    <tr style="background-color: #ecfdf5;">
+                        <td><strong>Hybrid Parallel</strong></td>
+                        <td><strong>ResNet50 + SVM</strong></td>
+                        <td><strong>86%</strong></td>
+                        <td><strong>~13 Menit</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0;">
+                <div class="img-container">
+                    <img src="images/cm-rf.png" alt="Confusion Matrix - Random Forest"
+                        onerror="this.style.display='none'">
+                    <span class="caption">Random Forest - Akurasi 66%</span>
+                </div>
+                <div class="img-container">
+                    <img src="images/cm-hgb.png" alt="Confusion Matrix - HistGradientBoosting"
+                        onerror="this.style.display='none'">
+                    <span class="caption">HistGradientBoosting - Akurasi 72%</span>
+                </div>
+            </div>
+            <div
+                style="display: grid; grid-template-columns: 1fr; gap: 20px; margin: 20px 0; max-width: 500px; margin-left: auto; margin-right: auto;">
+                <div class="img-container">
+                    <img src="images/cm-svm.png" alt="Confusion Matrix - Hybrid Model"
+                        onerror="this.style.display='none'">
+                    <span class="caption">Hybrid (ResNet50 + SVM) - Akurasi 86%</span>
+                </div>
+            </div>
+            <p style="text-align: center; font-size: 0.95rem; color: var(--text-gray); margin-top: 10px;"><em>Gambar 3:
+                    Confusion Matrix untuk ketiga pendekatan model.</em></p>
+        </section>
+
+        <section id="conclusion" style="border-bottom: none;">
+            <h2>Kesimpulan</h2>
+            <p style="text-align: justify;">
+                Penerapan teknik <strong>Parallel Computing</strong> terbukti krusial untuk implementasi Deep Learning
+                pada CPU.
+                Tanpa paralelisasi, proses ekstraksi fitur dan training akan memakan waktu estimasi >25 menit.
+                Dengan paralelisasi, waktu dapat dipangkas menjadi ~13 menit (Speedup keseluruhan ~2.3x), memungkinkan
+                iterasi pengembangan yang lebih cepat tanpa mengorbankan akurasi.
+            </p>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <h3>Disusun oleh Kelompok 7</h3>
+            <p>Parallel & Distributed Computing (DisC3)</p>
+            <br>
+            <p>
+                <strong>Muhammad Azhar Khaira</strong> (25120300010)<br>
+                <strong>Ghattab Abdul Jabbar</strong> (25120300008)
+            </p>
+            <br>
+            <hr style="border-color: #334155; opacity: 0.5; margin: 20px 0;">
+            <p style="font-size: 0.8rem; opacity: 0.7;">
+                Disclaimer: Project ini menggunakan Generative AI sebagai coding assistant (debugging & syntax
+                optimization).
+                Logika utama dan analisis data dilakukan secara mandiri oleh tim penyusun.
+            </p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
