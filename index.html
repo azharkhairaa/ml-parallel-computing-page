@@ -655,6 +655,11 @@
                 Dengan paralelisasi, waktu dapat dipangkas menjadi ~13 menit (Speedup keseluruhan ~2.3x dengan efisiensi ~28%) yang memungkinkan
                 iterasi pengembangan yang lebih cepat tanpa mengorbankan akurasi.
             </p>
+            <h2>Rekomendasi</h2>
+            <ul>
+                <li>Untuk proses Extract-Transform-Load (ETL) yang masif disarankan menggunakan Data Parallelism.</li>
+                <li>Hindari Nested Parallelism (memparalelkan algoritma yang sudah paralel secara internal seperti HistGradientBoost) kecuali dikonfigurasi dengan lebih lebih lanjut untuk menghindari konflik resource.</li>
+            </ul>
         </section>
     </div>
 
